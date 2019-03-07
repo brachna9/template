@@ -1,0 +1,46 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Parameters": {
+    "LoadBalancerArn": {
+      "Type": "String",
+      "Default": "arn:aws:elasticloadbalancing:us-east-1:853848736482:loadbalancer/app/awseb-AWSEB-1BAAODXP1ZEKP/ba712f347ac07ae1"
+    },
+    "TargetGroupArn": {
+      "Type": "String",
+      "Default": "arn:aws:elasticloadbalancing:us-east-1:853848736482:targetgroup/awseb-AWSEB-10NTMA8JVMEDF/13b2ba78551dbc5b"
+    }
+  },
+  "Resources": {
+    "ListenerCertificate": {
+      "Type": "AWS::ElasticLoadBalancingV2::ListenerCertificate",
+      "Properties": {
+        "Certificates": [{
+          "CertificateAr": "arn:aws:iam::853848736482:server-certificate/elastic-beanstalk-x550"
+        }],
+        "ListenerArn": {
+          "Ref": "Listener"
+        }
+      }
+    },
+    "Listener": {
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+      "Properties": {
+        "DefaultActions": [{
+          "Type": "forward",
+          "TargetGroupArn": {
+            "Ref": "TargetGroupArn"
+          }
+        }],
+        "LoadBalancerArn": {
+          "Ref": "LoadBalancerArn"
+        },
+        "Port": "-90",
+        "Protocol": "HTTPS",
+        "Certificates": [{
+          "CertificateArn": "arn:aws:iam::853848736482:server-certificate/elastic-beanstalk-x550"
+
+        }]
+      }
+    }
+  }
+}
